@@ -30,11 +30,20 @@ interface PhaseViewProps {
   onAnswer: (answer: PhaseAnswer) => void;
 }
 
+// A cor do texto fica só em textToneClasses: duas classes text-* no mesmo
+// botão disputam pela ordem do CSS gerado, não pela ordem no className.
 const surfaceClasses: Record<SurfaceTone, string> = {
-  panel: "border-muted/25 bg-graphite/55 text-ink",
-  danger: "border-alert bg-alert/90 text-void hover:!bg-alert",
-  neon: "border-neon bg-neon/90 text-void hover:!bg-neon",
-  ghost: "border-dashed border-muted/30 bg-transparent text-ink",
+  panel: "border-muted/25 bg-graphite/55",
+  danger: "border-alert bg-alert/90 hover:!bg-alert",
+  neon: "border-neon bg-neon/90 hover:!bg-neon",
+  ghost: "border-dashed border-muted/30 bg-transparent",
+};
+
+const defaultTextTone: Record<SurfaceTone, TextTone> = {
+  panel: "ink",
+  danger: "void",
+  neon: "void",
+  ghost: "ink",
 };
 
 const textToneClasses: Record<TextTone, string> = {
@@ -55,10 +64,11 @@ const sizeClasses: Record<ChoiceSize, string> = {
 };
 
 function choiceClass(choice: PhaseChoice): string {
+  const surface = choice.surface ?? "panel";
   return [
     "choice-base",
-    surfaceClasses[choice.surface ?? "panel"],
-    textToneClasses[choice.labelTone ?? "ink"],
+    surfaceClasses[surface],
+    textToneClasses[choice.labelTone ?? defaultTextTone[surface]],
     sizeClasses[choice.size ?? "md"],
   ].join(" ");
 }

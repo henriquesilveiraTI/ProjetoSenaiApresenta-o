@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest";
 import type { PhaseAnswer } from "@error/shared";
-import { PHASES, normalizeText, TOTAL_PHASES } from "../src/game/phases.js";
+import {
+  drawPhaseIds,
+  findPhaseByPublicId,
+  normalizeText,
+  PHASES,
+  PHASES_PER_RUN,
+  toPublicPhase,
+} from "../src/game/phases.js";
 
 const correctAnswers: Record<string, PhaseAnswer> = {
   "botao-da-cor": { kind: "choice", choiceId: "vermelho" },
@@ -18,17 +25,42 @@ const correctAnswers: Record<string, PhaseAnswer> = {
   "numero-palavra": { kind: "choice", choiceId: "7" },
   "apenas-vogais": { kind: "multi", selected: ["a", "e", "o"] },
   "perder-para-vencer": { kind: "choice", choiceId: "perder" },
+  "meses-28-dias": { kind: "choice", choiceId: "12" },
+  "aviao-fronteira": { kind: "choice", choiceId: "nenhum" },
+  "corrida-segundo": { kind: "choice", choiceId: "2" },
+  "algodao-ferro": { kind: "choice", choiceId: "igual" },
+  "moises-arca": { kind: "choice", choiceId: "nenhum" },
+  "cavalo-napoleao": { kind: "type", value: "Era branco!" },
+  "balde-furo": { kind: "choice", choiceId: "furo" },
+  "pares-com-zero": { kind: "multi", selected: ["0", "2", "10"] },
+  "fracoes-ordem": {
+    kind: "sequence",
+    order: ["quarto", "zero-tres", "meio", "zero-nove"],
+  },
+  "nao-e-fruta": { kind: "drag", itemId: "cenoura", target: "trash" },
 };
 
 describe("fases", () => {
-  it("tem a quantidade anunciada e numeração sequencial", () => {
-    expect(PHASES).toHaveLength(TOTAL_PHASES);
-    expect(TOTAL_PHASES).toBe(12);
+  it("tem fases suficientes para sortear uma partida", () => {
+    expect(PHASES_PER_RUN).toBe(12);
+    expect(PHASES.length).toBeGreaterThan(PHASES_PER_RUN);
+  });
 
-    PHASES.forEach((phase, index) => {
-      expect(phase.public.number).toBe(index + 1);
-      expect(phase.public.total).toBe(TOTAL_PHASES);
-    });
+  it("sorteia fases distintas e existentes", () => {
+    for (let attempt = 0; attempt < 50; attempt += 1) {
+      const ids = drawPhaseIds();
+      expect(ids).toHaveLength(PHASES_PER_RUN);
+      expect(new Set(ids).size).toBe(ids.length);
+      ids.forEach((id) => expect(findPhaseByPublicId(id)).not.toBeNull());
+    }
+  });
+
+  it("numera a fase pela posição na partida", () => {
+    const phase = PHASES[5]!;
+    const publicPhase = toPublicPhase(phase, 2, PHASES_PER_RUN);
+    expect(publicPhase.number).toBe(3);
+    expect(publicPhase.total).toBe(PHASES_PER_RUN);
+    expect(publicPhase.id).toBe(phase.public.id);
   });
 
   it("usa identificadores únicos", () => {

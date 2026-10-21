@@ -12,7 +12,12 @@ import { MAX_LIVES } from "@error/shared";
 import type { PoolClient } from "pg";
 import { query, withTransaction } from "../db/pool.js";
 import { ApiError } from "../lib/api-error.js";
-import { findPhaseByPublicId, getPhase, TOTAL_PHASES } from "../game/phases.js";
+import {
+  drawPhaseIds,
+  findPhaseByPublicId,
+  toPublicPhase,
+  type InternalPhase,
+} from "../game/phases.js";
 import { calculatePoints, feedbackFor } from "../game/scoring.js";
 import { parsePhaseAnswer } from "../game/answer-schema.js";
 
@@ -26,6 +31,7 @@ interface RunRow {
   best_streak: number;
   current_phase: number;
   total_phases: number;
+  phase_ids: string[];
   correct_count: number;
   wrong_count: number;
   started_at: Date;
@@ -49,9 +55,16 @@ export interface SubmitAnswerInput {
   durationMs: number;
 }
 
+function phaseAt(row: RunRow, index: number): InternalPhase | null {
+  const id = row.phase_ids[index];
+  return id ? findPhaseByPublicId(id) : null;
+}
+
 function serializeRun(row: RunRow): RunState {
-  const phase: PublicPhase | null =
-    row.status === "active" ? getPhase(row.current_phase)?.public ?? null : null;
+  const current = row.status === "active" ? phaseAt(row, row.current_phase) : null;
+  const phase: PublicPhase | null = current
+    ? toPublicPhase(current, row.current_phase, row.total_phases)
+    : null;
 
   return {
     id: row.id,
@@ -88,11 +101,12 @@ export async function createRun(playerId: string): Promise<CreateRunResponse> {
       [playerId],
     );
 
+    const phaseIds = drawPhaseIds();
     const result = await client.query<RunRow>(
-      `INSERT INTO runs (player_id, total_phases)
-       VALUES ($1, $2)
+      `INSERT INTO runs (player_id, total_phases, phase_ids)
+       VALUES ($1, $2, $3)
        RETURNING *`,
-      [playerId, TOTAL_PHASES],
+      [playerId, phaseIds.length, phaseIds],
     );
 
     const row = result.rows[0];
@@ -145,7 +159,7 @@ export async function getRunDetails(
       phaseIndex: answer.phase_index,
       phaseId: answer.phase_id,
       phaseTitle: phase
-        ? `FASE ${phase.public.number} — ${phase.public.eyebrow}`
+        ? `FASE ${answer.phase_index + 1} — ${phase.public.eyebrow}`
         : `FASE ${answer.phase_index + 1}`,
       correct: answer.correct,
       points: answer.points,
@@ -194,7 +208,7 @@ export async function submitAnswer(
       );
     }
 
-    const phase = getPhase(run.current_phase);
+    const phase = phaseAt(run, run.current_phase);
     if (!phase) {
       throw ApiError.conflict(
         "PHASE_NOT_FOUND",

@@ -32,5 +32,5 @@ export function calculatePoints(
 }
 
 export function feedbackFor(correct: boolean): string {
-  return correct ? "PADRÃO QUEBRADO" : "ERRO DE INTERPRETAÇÃO";
+  return correct ? "BRABO DEMAIS" : "SKILL ISSUE";
 }

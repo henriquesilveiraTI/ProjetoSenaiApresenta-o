@@ -108,11 +108,11 @@ function FeedbackOverlay({
         >
           {result.correct
             ? finished
-              ? "SISTEMA LIBERADO."
-              : "VOCÊ VIU O PADRÃO."
+              ? "ZEROU. RESPEITA."
+              : "NÃO CAIU, AMASSOU."
             : finished
-              ? "ACESSO BLOQUEADO."
-              : "A ARMADILHA FUNCIONOU."}
+              ? "DEU RUIM. FIM DE JOGO."
+              : "CAIU FEITO PATINHO."}
         </h2>
 
         <p className="mt-4 text-sm leading-relaxed text-muted">
