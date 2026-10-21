@@ -29,6 +29,13 @@ const sameSet = (left: string[], right: string[]): boolean => {
   return a.length === b.length && a.every((value, index) => value === b[index]);
 };
 
+/** Aceita a resposta digitada se alguma palavra dela estiver entre as esperadas. */
+const typedOneOf = (answer: PhaseAnswer, accepted: string[]): boolean =>
+  answer.kind === "type" &&
+  normalizeText(answer.value)
+    .split(" ")
+    .some((word) => accepted.includes(word));
+
 /** Normaliza texto para comparação tolerante a caixa, acentos e pontuação. */
 export function normalizeText(value: string): string {
   return value
@@ -143,65 +150,64 @@ export const PHASES: InternalPhase[] = [
   },
   {
     public: {
-      id: "ordem-alfabetica",
+      id: "meses-letras",
       kind: "sequence",
-      eyebrow: "ABC",
-      prompt: "TOCA NAS PALAVRAS EM ORDEM ALFABÉTICA.",
-      note: "A ordem dos toques importa, sem caô.",
+      eyebrow: "CONTA AS LETRAS",
+      prompt: "ORDENA OS MESES DO QUE TEM MENOS LETRAS PRO QUE TEM MAIS.",
+      note: "Não é a ordem do calendário.",
       submitLabel: "CONFIRMAR ORDEM",
       selectedLabel: "SUA ORDEM",
       items: [
-        { id: "zebra", label: "ZEBRA" },
-        { id: "macaco", label: "MACACO" },
-        { id: "abacaxi", label: "ABACAXI" },
-        { id: "dragao", label: "DRAGÃO" },
+        { id: "outubro", label: "OUTUBRO" },
+        { id: "maio", label: "MAIO" },
+        { id: "agosto", label: "AGOSTO" },
+        { id: "abril", label: "ABRIL" },
       ],
     },
     explanation:
-      "Era ABACAXI, DRAGÃO, MACACO, ZEBRA. Alfabeto de prézinho, mas na pressão pega, né?",
+      "MAIO (4), ABRIL (5), AGOSTO (6), OUTUBRO (7). Quem seguiu o calendário colocou ABRIL antes de MAIO e se deu mal.",
     validate: (answer) =>
       answer.kind === "sequence" &&
-      sameOrder(answer.order, ["abacaxi", "dragao", "macaco", "zebra"]),
+      sameOrder(answer.order, ["maio", "abril", "agosto", "outubro"]),
   },
   {
     public: {
-      id: "quatro-por-extenso",
+      id: "noves-ate-cem",
       kind: "type",
-      eyebrow: "MATEMÁTICA?",
-      prompt: "QUANTO É 2 + 2? RESPONDE POR EXTENSO.",
-      note: "A conta é fácil. Lê a instrução inteira, por favor.",
-      placeholder: "manda a resposta",
+      eyebrow: "CONTAGEM",
+      prompt: "QUANTAS VEZES O ALGARISMO 9 APARECE ESCRITO DE 1 ATÉ 100?",
+      note: "Conta com calma. Tem número que vale dobrado.",
+      placeholder: "manda o número",
       submitLabel: "ENVIAR",
       maxLength: 40,
-      helper: "Uma palavra só. Nada de número.",
+      helper: "Só o número.",
     },
     explanation:
-      "2 + 2 é 4, mas era por extenso: QUATRO. Quem digitou o número respondeu outra pergunta, fato.",
-    validate: (answer) =>
-      answer.kind === "type" && normalizeText(answer.value) === "quatro",
+      "São 20: nove nas unidades (9, 19… 89), dez de 90 a 99, e o 99 tem dois. Quase todo mundo chuta 10 ou 11.",
+    validate: (answer) => typedOneOf(answer, ["20", "vinte"]),
   },
   {
     public: {
-      id: "sem-a",
+      id: "nao-e-mamifero",
       kind: "drag",
-      eyebrow: "OLHO VIVO",
-      prompt: "ARRASTA PRA LIXEIRA A ÚNICA PALAVRA SEM A LETRA A.",
-      note: "No celular: toca na palavra e depois no destino.",
+      eyebrow: "BIOLOGIA",
+      prompt: "ARRASTA PRA LIXEIRA O ÚNICO QUE NÃO É MAMÍFERO.",
+      note: "Tem bicho estranho aí que engana.",
       targetLabel: "LIXEIRA",
       keepLabel: "DEIXAR",
-      selectHint: "Escolhe uma palavra e depois o destino.",
+      selectHint: "Escolhe um bicho e depois o destino.",
       items: [
-        { id: "casa", label: "CASA" },
-        { id: "amor", label: "AMOR" },
-        { id: "erro", label: "ERRO" },
-        { id: "tela", label: "TELA" },
+        { id: "baleia", label: "BALEIA" },
+        { id: "morcego", label: "MORCEGO" },
+        { id: "pinguim", label: "PINGUIM" },
+        { id: "ornitorrinco", label: "ORNITORRINCO" },
       ],
     },
     explanation:
-      "ERRO era a única sem A. As outras três tinham pelo menos um. Ironia? Talvez.",
+      "O PINGUIM é ave. Baleia, morcego e até o ornitorrinco (que bota ovo!) são mamíferos.",
     validate: (answer) =>
       answer.kind === "drag" &&
-      answer.itemId === "erro" &&
+      answer.itemId === "pinguim" &&
       answer.target === "trash",
   },
   {
@@ -241,73 +247,65 @@ export const PHASES: InternalPhase[] = [
   },
   {
     public: {
-      id: "numero-palavra",
+      id: "ovelhas-menos-nove",
       kind: "choice",
-      eyebrow: "TEM ALGO ERRADO",
-      prompt: "CLICA NA OPÇÃO ONDE O NÚMERO E A PALAVRA NÃO BATEM.",
-      note: "Só uma tá de mal consigo mesma.",
+      eyebrow: "FAZENDINHA",
+      prompt: "UM FAZENDEIRO TINHA 17 OVELHAS. TODAS MENOS 9 MORRERAM. QUANTAS SOBRARAM?",
+      note: "Não precisa fazer conta.",
       columns: 2,
       choices: [
-        { id: "3", label: "3 TRÊS", size: "md" },
-        { id: "5", label: "5 CINCO", size: "md" },
-        { id: "7", label: "7 OITO", size: "md" },
-        { id: "9", label: "9 NOVE", size: "md" },
+        { id: "8", label: "8", size: "lg" },
+        { id: "9", label: "9", size: "lg" },
+        { id: "17", label: "17", size: "lg" },
+        { id: "0", label: "0", size: "lg" },
       ],
     },
     explanation:
-      "7 não é OITO, né. As outras falavam a mesma coisa de dois jeitos.",
-    validate: (answer) => choiceIs(answer, "7"),
+      "\"Todas menos 9 morreram\" quer dizer que 9 ficaram vivas. Quem fez 17 − 9 respondeu 8.",
+    validate: (answer) => choiceIs(answer, "9"),
   },
   {
     public: {
-      id: "apenas-vogais",
+      id: "numeros-primos",
       kind: "multi",
-      eyebrow: "SELEÇÃO",
-      prompt: "SELECIONA SÓ AS VOGAIS.",
-      note: "Pode marcar mais de uma. Só as certas, hein.",
+      eyebrow: "PRIMOS",
+      prompt: "SELECIONA SÓ OS NÚMEROS PRIMOS.",
+      note: "Primo só divide por 1 e por ele mesmo.",
       submitLabel: "CONFIRMAR",
-      selectedLabel: "MARCADAS",
+      selectedLabel: "MARCADOS",
       items: [
-        { id: "e", label: "E", size: "lg" },
-        { id: "r", label: "R", size: "lg" },
-        { id: "o", label: "O", size: "lg" },
-        { id: "a", label: "A", size: "lg" },
-        { id: "x", label: "X", size: "lg" },
+        { id: "1", label: "1", size: "lg" },
+        { id: "2", label: "2", size: "lg" },
+        { id: "9", label: "9", size: "lg" },
+        { id: "11", label: "11", size: "lg" },
+        { id: "15", label: "15", size: "lg" },
+        { id: "17", label: "17", size: "lg" },
       ],
     },
     explanation:
-      "As vogais eram E, O e A. R e X são consoantes, não adianta insistir.",
+      "Os primos eram 2, 11 e 17. O 1 não é primo, e 9 e 15 parecem mas dividem por 3.",
     validate: (answer) =>
-      answer.kind === "multi" && sameSet(answer.selected, ["e", "o", "a"]),
+      answer.kind === "multi" && sameSet(answer.selected, ["2", "11", "17"]),
   },
   {
     public: {
-      id: "perder-para-vencer",
+      id: "bola-e-taco",
       kind: "choice",
-      eyebrow: "PLOT TWIST",
-      prompt: "CLICA EM PERDER PRA GANHAR.",
-      note: "Confia no processo.",
+      eyebrow: "CONTA DE PADARIA",
+      prompt:
+        "UM TACO E UMA BOLA CUSTAM R$ 1,10 JUNTOS. O TACO CUSTA R$ 1,00 A MAIS QUE A BOLA. QUANTO CUSTA A BOLA?",
+      note: "A primeira resposta que vem na cabeça tá errada.",
       columns: 2,
       choices: [
-        {
-          id: "ganhar",
-          label: "GANHAR",
-          surface: "neon",
-          labelTone: "void",
-          size: "lg",
-        },
-        {
-          id: "perder",
-          label: "PERDER",
-          surface: "danger",
-          labelTone: "void",
-          size: "lg",
-        },
+        { id: "10", label: "R$ 0,10", size: "md" },
+        { id: "05", label: "R$ 0,05", size: "md" },
+        { id: "01", label: "R$ 0,01", size: "md" },
+        { id: "100", label: "R$ 1,00", size: "md" },
       ],
     },
     explanation:
-      "Você queria ganhar, mas a instrução mandava clicar em PERDER. Aqui, obedecer era ganhar.",
-    validate: (answer) => choiceIs(answer, "perder"),
+      "A bola custa R$ 0,05 e o taco R$ 1,05. Se a bola fosse R$ 0,10, o taco seria R$ 1,10 e o total daria R$ 1,20.",
+    validate: (answer) => choiceIs(answer, "05"),
   },
   {
     public: {
@@ -369,21 +367,22 @@ export const PHASES: InternalPhase[] = [
   },
   {
     public: {
-      id: "algodao-ferro",
+      id: "tijolo-e-meio",
       kind: "choice",
       eyebrow: "FÍSICA DE BOTECO",
-      prompt: "O QUE PESA MAIS: 1 KG DE ALGODÃO OU 1 KG DE FERRO?",
-      note: "Sua intuição tá doida pra responder. Segura.",
-      columns: 3,
+      prompt: "UM TIJOLO PESA 1 KG MAIS MEIO TIJOLO. QUANTO PESA UM TIJOLO INTEIRO?",
+      note: "Monta a equação de cabeça.",
+      columns: 2,
       choices: [
-        { id: "algodao", label: "ALGODÃO", size: "md" },
-        { id: "ferro", label: "FERRO", size: "md" },
-        { id: "igual", label: "PESAM IGUAL", size: "md" },
+        { id: "1", label: "1 KG", size: "md" },
+        { id: "1-5", label: "1,5 KG", size: "md" },
+        { id: "2", label: "2 KG", size: "md" },
+        { id: "3", label: "3 KG", size: "md" },
       ],
     },
     explanation:
-      "1 kg é 1 kg, mano. O ferro só parece mais pesado na sua cabeça.",
-    validate: (answer) => choiceIs(answer, "igual"),
+      "Se meio tijolo é 1 kg, o tijolo todo é 2 kg. O 1,5 kg é a resposta da pressa.",
+    validate: (answer) => choiceIs(answer, "2"),
   },
   {
     public: {
@@ -406,23 +405,19 @@ export const PHASES: InternalPhase[] = [
   },
   {
     public: {
-      id: "cavalo-napoleao",
+      id: "errado-dicionario",
       kind: "type",
-      eyebrow: "HISTÓRIA",
-      prompt: "QUAL ERA A COR DO CAVALO BRANCO DE NAPOLEÃO?",
-      note: "Não pensa demais.",
-      placeholder: "manda a cor",
+      eyebrow: "DICIONÁRIO",
+      prompt: "QUAL PALAVRA ESTÁ ESCRITA ERRADO EM TODOS OS DICIONÁRIOS?",
+      note: "Os dicionários estão certos. A pergunta também.",
+      placeholder: "manda a palavra",
       submitLabel: "ENVIAR",
       maxLength: 40,
       helper: "Uma palavra resolve.",
     },
     explanation:
-      "A resposta tava na pergunta: BRANCO. Às vezes não tem pegadinha... e essa é a pegadinha.",
-    validate: (answer) =>
-      answer.kind === "type" &&
-      normalizeText(answer.value)
-        .split(" ")
-        .some((word) => word === "branco" || word === "branca"),
+      "A palavra \"ERRADO\" está escrita assim em todo dicionário. A resposta tava na pergunta o tempo todo.",
+    validate: (answer) => typedOneOf(answer, ["errado"]),
   },
   {
     public: {
@@ -509,6 +504,236 @@ export const PHASES: InternalPhase[] = [
     validate: (answer) =>
       answer.kind === "drag" &&
       answer.itemId === "cenoura" &&
+      answer.target === "trash",
+  },
+  {
+    public: {
+      id: "maquinas-pecas",
+      kind: "choice",
+      eyebrow: "FÁBRICA",
+      prompt:
+        "5 MÁQUINAS FAZEM 5 PEÇAS EM 5 MINUTOS. QUANTO TEMPO 100 MÁQUINAS LEVAM PRA FAZER 100 PEÇAS?",
+      note: "Pensa em quanto tempo UMA máquina leva pra fazer UMA peça.",
+      columns: 2,
+      choices: [
+        { id: "1", label: "1 MINUTO", size: "md" },
+        { id: "5", label: "5 MINUTOS", size: "md" },
+        { id: "20", label: "20 MINUTOS", size: "md" },
+        { id: "100", label: "100 MINUTOS", size: "md" },
+      ],
+    },
+    explanation:
+      "Cada máquina faz 1 peça em 5 minutos. Com 100 máquinas juntas, saem 100 peças nos mesmos 5 minutos.",
+    validate: (answer) => choiceIs(answer, "5"),
+  },
+  {
+    public: {
+      id: "planta-lago",
+      kind: "choice",
+      eyebrow: "CRESCIMENTO",
+      prompt:
+        "UMA PLANTA DOBRA DE TAMANHO TODO DIA E COBRE O LAGO INTEIRO EM 30 DIAS. EM QUANTOS DIAS ELA COBRIU METADE?",
+      note: "Dobrar não é somar.",
+      columns: 2,
+      choices: [
+        { id: "10", label: "10 DIAS", size: "md" },
+        { id: "15", label: "15 DIAS", size: "md" },
+        { id: "20", label: "20 DIAS", size: "md" },
+        { id: "29", label: "29 DIAS", size: "md" },
+      ],
+    },
+    explanation:
+      "No dia 29 ela cobria metade e, dobrando, no dia 30 cobriu tudo. 15 é a metade do tempo, não do lago.",
+    validate: (answer) => choiceIs(answer, "29"),
+  },
+  {
+    public: {
+      id: "filhas-maria",
+      kind: "choice",
+      eyebrow: "FAMÍLIA",
+      prompt:
+        "O PAI DA MARIA TEM 5 FILHAS: LALA, LELE, LILI E LOLO. QUAL É O NOME DA QUINTA?",
+      note: "O padrão é tentador.",
+      columns: 2,
+      choices: [
+        { id: "lulu", label: "LULU", size: "md" },
+        { id: "maria", label: "MARIA", size: "md" },
+        { id: "lala", label: "LALA", size: "md" },
+        { id: "nao-da", label: "NÃO DÁ PRA SABER", size: "md" },
+      ],
+    },
+    explanation:
+      "O pai é da MARIA. Ela é a quinta filha. O padrão das vogais foi só distração.",
+    validate: (answer) => choiceIs(answer, "maria"),
+  },
+  {
+    public: {
+      id: "comprimidos",
+      kind: "type",
+      eyebrow: "FARMÁCIA",
+      prompt:
+        "VOCÊ TEM 3 COMPRIMIDOS E PRECISA TOMAR UM A CADA MEIA HORA. EM QUANTOS MINUTOS VOCÊ TOMA TODOS?",
+      note: "Quando você toma o primeiro?",
+      placeholder: "manda os minutos",
+      submitLabel: "ENVIAR",
+      maxLength: 40,
+      helper: "Só o número de minutos.",
+    },
+    explanation:
+      "60 minutos: o primeiro agora, o segundo com 30 e o terceiro com 60. Quem respondeu 90 contou um intervalo a mais.",
+    validate: (answer) => typedOneOf(answer, ["60", "sessenta"]),
+  },
+  {
+    public: {
+      id: "anos-bissextos",
+      kind: "multi",
+      eyebrow: "CALENDÁRIO",
+      prompt: "SELECIONA SÓ OS ANOS BISSEXTOS.",
+      note: "Ser divisível por 4 nem sempre basta.",
+      submitLabel: "CONFIRMAR",
+      selectedLabel: "MARCADOS",
+      items: [
+        { id: "1900", label: "1900", size: "md" },
+        { id: "2000", label: "2000", size: "md" },
+        { id: "2023", label: "2023", size: "md" },
+        { id: "2024", label: "2024", size: "md" },
+        { id: "2100", label: "2100", size: "md" },
+      ],
+    },
+    explanation:
+      "Só 2000 e 2024. Ano terminado em 00 só é bissexto se der pra dividir por 400, por isso 1900 e 2100 não são.",
+    validate: (answer) =>
+      answer.kind === "multi" && sameSet(answer.selected, ["2000", "2024"]),
+  },
+  {
+    public: {
+      id: "horarios-dia",
+      kind: "sequence",
+      eyebrow: "RELÓGIO",
+      prompt: "ORDENA DO MAIS CEDO PRO MAIS TARDE, TUDO NO MESMO DIA.",
+      note: "O dia começa quando?",
+      submitLabel: "CONFIRMAR ORDEM",
+      selectedLabel: "SUA ORDEM",
+      items: [
+        { id: "12h30", label: "MEIO-DIA E MEIA" },
+        { id: "13h05", label: "13H05" },
+        { id: "00h15", label: "MEIA-NOITE E QUINZE" },
+        { id: "11h45", label: "11H45" },
+      ],
+    },
+    explanation:
+      "Meia-noite e quinze (00h15) é o primeiro horário do dia. Depois 11h45, meio-dia e meia (12h30) e 13h05.",
+    validate: (answer) =>
+      answer.kind === "sequence" &&
+      sameOrder(answer.order, ["00h15", "11h45", "12h30", "13h05"]),
+  },
+  {
+    public: {
+      id: "nao-e-capital",
+      kind: "drag",
+      eyebrow: "GEOGRAFIA",
+      prompt: "ARRASTA PRA LIXEIRA A CIDADE QUE NÃO É CAPITAL DE ESTADO.",
+      note: "Cidade grande e famosa não é sinônimo de capital.",
+      targetLabel: "LIXEIRA",
+      keepLabel: "DEIXAR",
+      selectHint: "Escolhe uma cidade e depois o destino.",
+      items: [
+        { id: "palmas", label: "PALMAS" },
+        { id: "santos", label: "SANTOS" },
+        { id: "boa-vista", label: "BOA VISTA" },
+        { id: "vitoria", label: "VITÓRIA" },
+      ],
+    },
+    explanation:
+      "SANTOS fica em São Paulo, mas a capital é a cidade de São Paulo. Palmas (TO), Boa Vista (RR) e Vitória (ES) são capitais.",
+    validate: (answer) =>
+      answer.kind === "drag" &&
+      answer.itemId === "santos" &&
+      answer.target === "trash",
+  },
+  {
+    public: {
+      id: "nada-verde",
+      kind: "choice",
+      eyebrow: "COR OU PALAVRA?",
+      prompt:
+        "CLICA NO ÚNICO BOTÃO SEM NADA VERDE: NEM O FUNDO, NEM A LETRA, NEM A PALAVRA.",
+      note: "Confere as três coisas em cada botão.",
+      columns: 2,
+      choices: [
+        {
+          id: "azul",
+          label: "AZUL",
+          surface: "neon",
+          labelTone: "void",
+          size: "lg",
+        },
+        {
+          id: "verde",
+          label: "VERDE",
+          surface: "panel",
+          labelTone: "danger",
+          size: "lg",
+        },
+        {
+          id: "roxo",
+          label: "ROXO",
+          surface: "panel",
+          labelTone: "neon",
+          size: "lg",
+        },
+        {
+          id: "amarelo",
+          label: "AMARELO",
+          surface: "danger",
+          labelTone: "void",
+          size: "lg",
+        },
+      ],
+    },
+    explanation:
+      "Só AMARELO não tinha verde. AZUL tinha fundo verde, ROXO tinha letra verde e VERDE tinha a palavra.",
+    validate: (answer) => choiceIs(answer, "amarelo"),
+  },
+  {
+    public: {
+      id: "proximo-numero",
+      kind: "type",
+      eyebrow: "SEQUÊNCIA",
+      prompt: "QUAL É O PRÓXIMO NÚMERO: 1, 1, 2, 3, 5, 8, ...?",
+      note: "Olha os dois números anteriores.",
+      placeholder: "manda o número",
+      submitLabel: "ENVIAR",
+      maxLength: 40,
+      helper: "Só o número.",
+    },
+    explanation:
+      "13. Cada número é a soma dos dois anteriores: 5 + 8 = 13. É a sequência de Fibonacci.",
+    validate: (answer) => typedOneOf(answer, ["13", "treze"]),
+  },
+  {
+    public: {
+      id: "anagrama-amor",
+      kind: "drag",
+      eyebrow: "EMBARALHADO",
+      prompt:
+        "ARRASTA PRA LIXEIRA A PALAVRA QUE NÃO USA EXATAMENTE AS LETRAS DE AMOR.",
+      note: "Mesmas letras, mesma quantidade.",
+      targetLabel: "LIXEIRA",
+      keepLabel: "DEIXAR",
+      selectHint: "Escolhe uma palavra e depois o destino.",
+      items: [
+        { id: "roma", label: "ROMA" },
+        { id: "aroma", label: "AROMA" },
+        { id: "ramo", label: "RAMO" },
+        { id: "mora", label: "MORA" },
+      ],
+    },
+    explanation:
+      "AROMA tem um A a mais. ROMA, RAMO e MORA usam exatamente A, M, O e R.",
+    validate: (answer) =>
+      answer.kind === "drag" &&
+      answer.itemId === "aroma" &&
       answer.target === "trash",
   },
 ];

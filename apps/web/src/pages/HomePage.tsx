@@ -14,13 +14,10 @@ import { Logo } from "../components/Logo";
 import { Modal, Spinner } from "../components/ui";
 import {
   ArrowRightIcon,
-  CheckIcon,
   FlameIcon,
   LockIcon,
   PlayIcon,
-  SparkIcon,
   TargetIcon,
-  TrophyIcon,
   UserIcon,
 } from "../components/icons";
 
@@ -37,17 +34,17 @@ const principles = [
   {
     icon: TargetIcon,
     title: "LEIA. DE NOVO.",
-    text: "A instrução está certa. A sua primeira interpretação talvez não esteja. Palavras, cores e posições importam.",
+    text: "A resposta está na instrução. Leia com calma.",
   },
   {
     icon: LockIcon,
     title: "DESCONFIE.",
-    text: "O botão mais chamativo raramente é a resposta. O sistema cria armadilhas que parecem perfeitamente razoáveis.",
+    text: "O óbvio costuma ser a armadilha.",
   },
   {
     icon: FlameIcon,
     title: "SOBREVIVA.",
-    text: "Três vidas. Doze fases. Cada erro revela a lógica e cobra uma vida. Terminar sem erros é outra categoria.",
+    text: "12 fases, 3 vidas. Cada erro custa uma.",
   },
 ];
 
@@ -172,12 +169,7 @@ export function HomePage() {
         <div className="pointer-events-none absolute -top-24 left-1/2 h-72 w-[42rem] -translate-x-1/2 rounded-full bg-neon/8 blur-[120px]" />
         <div className="mx-auto grid w-full max-w-7xl items-center gap-12 px-4 pt-14 pb-20 sm:px-6 lg:grid-cols-[1.08fr_0.92fr] lg:pt-20">
           <div className="animate-phase-in">
-            <div className="inline-flex items-center gap-2 border border-neon/25 bg-neon/5 px-3 py-1.5 font-display text-[0.6rem] font-bold tracking-[0.26em] text-neon">
-              <span className="size-1.5 animate-pulse rounded-full bg-neon shadow-[0_0_10px_#39ff14]" />
-              SISTEMA DE AVALIAÇÃO DE ATENÇÃO · v1.0
-            </div>
-
-            <Logo className="mt-7 w-[min(88vw,36rem)]" label="ERROR" />
+            <Logo className=" w-[min(88vw,36rem)]" label="ERROR" />
 
             <h1 className="mt-4 max-w-xl text-3xl leading-[1.08] text-ink sm:text-4xl">
               O SISTEMA ESTÁ TENTANDO
@@ -186,9 +178,7 @@ export function HomePage() {
             </h1>
 
             <p className="mt-5 max-w-xl text-sm leading-relaxed text-muted sm:text-base">
-              Um jogo de perguntas, pegadinhas e raciocínio lateral. A resposta
-              óbvia costuma ser a armadilha. Leia com atenção — ou descubra o
-              preço de não ter lido.
+              Um jogo de pegadinhas. Leia com atenção.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -265,9 +255,6 @@ export function HomePage() {
                     <div className="min-w-0">
                       <p className="truncate font-display text-sm font-bold tracking-[0.08em] text-ink">
                         {player.nickname}
-                      </p>
-                      <p className="mt-0.5 text-[0.65rem] text-muted">
-                        Jogador autenticado por dispositivo
                       </p>
                     </div>
                   </div>
@@ -353,13 +340,9 @@ export function HomePage() {
                 </div>
               ) : (
                 <form className="mt-6" onSubmit={handleSignInAndStart}>
-                  <p className="text-sm leading-relaxed text-muted">
-                    Escolha um apelido. Sem e-mail, sem senha, sem tutorial longo.
-                    Sua sessão fica vinculada a este dispositivo.
-                  </p>
                   <label
                     htmlFor="nickname"
-                    className="mt-5 block text-[0.62rem] font-bold tracking-[0.22em] text-muted uppercase"
+                    className="block text-[0.62rem] font-bold tracking-[0.22em] text-muted uppercase"
                   >
                     Seu apelido
                   </label>
@@ -378,7 +361,7 @@ export function HomePage() {
                     aria-describedby="nickname-help"
                   />
                   <p id="nickname-help" className="mt-2 text-[0.65rem] text-muted">
-                    2 a 20 caracteres. Evite seu nome completo.
+                    2 a 20 caracteres. Sem senha.
                   </p>
                   <button
                     type="submit"
@@ -386,15 +369,8 @@ export function HomePage() {
                     className="btn-neon mt-5 w-full"
                   >
                     {starting ? <Spinner /> : <UserIcon className="size-4" />}
-                    Autenticar e iniciar
+                    Jogar
                   </button>
-                  <div className="mt-4 flex items-start gap-2 text-[0.65rem] leading-relaxed text-muted">
-                    <CheckIcon className="mt-0.5 size-3.5 shrink-0 text-neon" />
-                    <span>
-                      Suas partidas e recordes ficam salvos no ranking. Nenhuma
-                      senha é necessária.
-                    </span>
-                  </div>
                 </form>
               )}
 
@@ -404,21 +380,6 @@ export function HomePage() {
                 </p>
               ) : null}
 
-              <div className="mt-6 border-t border-neon/10 pt-4 font-mono text-[0.62rem] leading-relaxed text-muted/80">
-                <p>
-                  <span className="text-neon">&gt;</span> integridade do sistema:{" "}
-                  <span className="text-neon">instável</span>
-                </p>
-                <p>
-                  <span className="text-neon">&gt;</span> instrução disponível:{" "}
-                  <span className="text-neon">sim</span>
-                </p>
-                <p>
-                  <span className="text-neon">&gt;</span> confiança recomendada:{" "}
-                  <span className="text-alert">zero</span>
-                  <span className="ml-1 inline-block h-3 w-1.5 animate-pulse bg-neon align-middle" />
-                </p>
-              </div>
             </div>
           </div>
         </div>
@@ -446,10 +407,6 @@ export function HomePage() {
           <h2 className="mt-4 text-3xl text-ink sm:text-4xl">
             A resposta certa não parece certa.
           </h2>
-          <p className="mt-4 text-sm leading-relaxed text-muted">
-            Cada fase testa uma forma diferente de atenção. Você pode errar —
-            mas vai entender por quê. Três erros encerram a partida.
-          </p>
         </div>
 
         <div className="mt-10 grid gap-4 md:grid-cols-3">
@@ -469,68 +426,16 @@ export function HomePage() {
           ))}
         </div>
 
-        <div className="mt-12 grid gap-4 lg:grid-cols-[1.25fr_0.75fr]">
-          <div className="hud-panel p-6 sm:p-8">
-            <div className="flex items-center gap-3">
-              <TrophyIcon className="size-5 text-neon" />
-              <p className="font-display text-xs font-bold tracking-[0.22em] text-neon">
-                O QUE ESTÁ EM JOGO
-              </p>
-            </div>
-            <div className="mt-6 grid gap-6 sm:grid-cols-2">
-              <div>
-                <p className="font-display text-base text-ink">Pontuação</p>
-                <p className="mt-2 text-sm leading-relaxed text-muted">
-                  Acertos valem pontos, com bônus por velocidade e sequência.
-                  Errar zera a fase e custa uma vida.
-                </p>
-              </div>
-              <div>
-                <p className="font-display text-base text-ink">Ranking</p>
-                <p className="mt-2 text-sm leading-relaxed text-muted">
-                  O melhor resultado de cada jogador entra no ranking global.
-                  Sem erros, você entra para outra categoria.
-                </p>
-              </div>
-              <div>
-                <p className="font-display text-base text-ink">Aprendizado</p>
-                <p className="mt-2 text-sm leading-relaxed text-muted">
-                  Cada resposta revela a lógica da pegadinha. A fase seguinte não
-                  avisa qual será o próximo padrão.
-                </p>
-              </div>
-              <div>
-                <p className="font-display text-base text-ink">PWA</p>
-                <p className="mt-2 text-sm leading-relaxed text-muted">
-                  Instale o ERROR no celular ou computador. A interface abre em
-                  tela cheia, como um aplicativo.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="hud-panel relative flex flex-col justify-between overflow-hidden p-6 sm:p-8">
-            <div className="absolute -top-10 -right-10 size-40 rounded-full bg-neon/10 blur-3xl" />
-            <div>
-              <SparkIcon className="size-6 text-neon" />
-              <p className="mt-4 font-display text-sm font-bold tracking-[0.16em] text-neon">
-                AINDA ACHANDO QUE É FÁCIL?
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-muted">
-                A primeira fase é simples. A segunda também. É exatamente assim
-                que o sistema ganha confiança.
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={handlePrimaryAction}
-              disabled={starting || !ready}
-              className="btn-neon mt-8 w-full"
-            >
-              {starting ? <Spinner /> : <PlayIcon className="size-4" />}
-              {activeRun ? "Continuar partida" : "Aceitar o teste"}
-            </button>
-          </div>
+        <div className="mt-10 flex justify-center">
+          <button
+            type="button"
+            onClick={handlePrimaryAction}
+            disabled={starting || !ready}
+            className="btn-neon min-w-52"
+          >
+            {starting ? <Spinner /> : <PlayIcon className="size-4" />}
+            {activeRun ? "Continuar partida" : "Aceitar o teste"}
+          </button>
         </div>
       </section>
 
