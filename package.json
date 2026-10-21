@@ -1,0 +1,32 @@
+{
+  "name": "error-game",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ERROR — jogo de pegadinhas e raciocínio lateral com web app, PWA e API.",
+  "license": "MIT",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "npm run build -w @error/shared && concurrently -k -n API,WEB -c yellow,green \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "npm run dev -w @error/api",
+    "dev:web": "npm run dev -w @error/web",
+    "build": "npm run build -w @error/shared && npm run build -w @error/api && npm run build -w @error/web",
+    "start": "npm run start -w @error/api",
+    "typecheck": "npm run typecheck -w @error/shared && npm run typecheck -w @error/api && npm run typecheck -w @error/web",
+    "test": "npm run test -w @error/api",
+    "test:watch": "npm run test:watch -w @error/api",
+    "db:migrate": "npm run db:migrate -w @error/api",
+    "db:reset": "npm run db:reset -w @error/api",
+    "icons": "node scripts/generate-icons.mjs",
+    "setup": "node scripts/setup.mjs"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.6",
+    "sharp": "^0.35.5"
+  }
+}

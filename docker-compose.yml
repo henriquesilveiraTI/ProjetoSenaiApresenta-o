@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: error-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: error
+      POSTGRES_PASSWORD: error
+      POSTGRES_DB: error
+    ports:
+      - "5433:5432"
+    volumes:
+      - error_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U error -d error"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  error_pgdata:
