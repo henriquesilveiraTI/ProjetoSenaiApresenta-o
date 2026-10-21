@@ -7,7 +7,7 @@ web app + PWA, com API própria, ranking global e progressão anônima por dispo
 A resposta óbvia costuma ser a armadilha: o jogo testa interpretação, atenção e
 paciência — não conhecimento decorado.
 
-- **12 fases** com 8 mecânicas diferentes
+- **12 fases** com 7 mecânicas diferentes
 - **3 vidas** por rodada
 - **Ranking global** com o melhor resultado de cada jogador
 - **Sem cadastro ou senha**: sessão anônima vinculada ao dispositivo
@@ -143,7 +143,7 @@ relativo; em produção, defina a URL pública da API.
 
 ### Mecânicas de fase
 
-`choice`, `outside` (clicar fora de um painel), `wait` (esperar a barra),
+`choice`, `outside` (clicar fora de um painel),
 `sequence` (ordenar), `type` (resposta escrita), `drag` (arrastar/tocar),
 `hold` (segurar) e `multi` (seleção múltipla).
 

@@ -133,23 +133,6 @@ export const PHASES: InternalPhase[] = [
   },
   {
     public: {
-      id: "barra-cheia",
-      kind: "wait",
-      eyebrow: "PACIÊNCIA",
-      prompt: "CLICA EM CONTINUAR SÓ QUANDO A BARRA ENCHER.",
-      note: "Nem um segundo antes. O sistema tá vendo sua ansiedade.",
-      waitMs: 4000,
-      buttonLabel: "CONTINUAR",
-      waitingLabel: "SEGURA AÍ",
-      readyLabel: "CONTINUAR",
-    },
-    explanation:
-      "A pressa era a pegadinha. Tinha que esperar a barra encher inteirinha. Respira.",
-    validate: (answer) =>
-      answer.kind === "wait" && answer.waitedMs >= 3900,
-  },
-  {
-    public: {
       id: "meses-letras",
       kind: "sequence",
       eyebrow: "CONTA AS LETRAS",
@@ -266,26 +249,27 @@ export const PHASES: InternalPhase[] = [
   },
   {
     public: {
-      id: "numeros-primos",
+      id: "palindromos",
       kind: "multi",
-      eyebrow: "PRIMOS",
-      prompt: "SELECIONA SÓ OS NÚMEROS PRIMOS.",
-      note: "Primo só divide por 1 e por ele mesmo.",
+      eyebrow: "DE TRÁS PRA FRENTE",
+      prompt: "SELECIONA AS PALAVRAS QUE FICAM IGUAIS LIDAS DE TRÁS PRA FRENTE.",
+      note: "Letra por letra, sem pular nenhuma.",
       submitLabel: "CONFIRMAR",
-      selectedLabel: "MARCADOS",
+      selectedLabel: "MARCADAS",
       items: [
-        { id: "1", label: "1", size: "lg" },
-        { id: "2", label: "2", size: "lg" },
-        { id: "9", label: "9", size: "lg" },
-        { id: "11", label: "11", size: "lg" },
-        { id: "15", label: "15", size: "lg" },
-        { id: "17", label: "17", size: "lg" },
+        { id: "ovo", label: "OVO", size: "md" },
+        { id: "roma", label: "ROMA", size: "md" },
+        { id: "arara", label: "ARARA", size: "md" },
+        { id: "sol", label: "SOL", size: "md" },
+        { id: "radar", label: "RADAR", size: "md" },
+        { id: "arroz", label: "ARROZ", size: "md" },
       ],
     },
     explanation:
-      "Os primos eram 2, 11 e 17. O 1 não é primo, e 9 e 15 parecem mas dividem por 3.",
+      "OVO, ARARA e RADAR. ROMA vira AMOR, SOL vira LOS e ARROZ vira ZORRA: palavras diferentes.",
     validate: (answer) =>
-      answer.kind === "multi" && sameSet(answer.selected, ["2", "11", "17"]),
+      answer.kind === "multi" &&
+      sameSet(answer.selected, ["ovo", "arara", "radar"]),
   },
   {
     public: {
@@ -367,22 +351,22 @@ export const PHASES: InternalPhase[] = [
   },
   {
     public: {
-      id: "tijolo-e-meio",
+      id: "buraco-terra",
       kind: "choice",
-      eyebrow: "FÍSICA DE BOTECO",
-      prompt: "UM TIJOLO PESA 1 KG MAIS MEIO TIJOLO. QUANTO PESA UM TIJOLO INTEIRO?",
-      note: "Monta a equação de cabeça.",
+      eyebrow: "OBRA",
+      prompt: "QUANTA TERRA TEM DENTRO DE UM BURACO DE 1 METRO DE FUNDURA?",
+      note: "Imagina o buraco pronto.",
       columns: 2,
       choices: [
-        { id: "1", label: "1 KG", size: "md" },
-        { id: "1-5", label: "1,5 KG", size: "md" },
-        { id: "2", label: "2 KG", size: "md" },
-        { id: "3", label: "3 KG", size: "md" },
+        { id: "1m", label: "1 METRO CÚBICO", size: "md" },
+        { id: "tonelada", label: "1 TONELADA", size: "md" },
+        { id: "metade", label: "METADE DELE", size: "md" },
+        { id: "nenhuma", label: "NENHUMA", size: "md" },
       ],
     },
     explanation:
-      "Se meio tijolo é 1 kg, o tijolo todo é 2 kg. O 1,5 kg é a resposta da pressa.",
-    validate: (answer) => choiceIs(answer, "2"),
+      "Buraco é justamente o lugar de onde tiraram a terra. Dentro dele não tem nenhuma.",
+    validate: (answer) => choiceIs(answer, "nenhuma"),
   },
   {
     public: {
@@ -508,23 +492,22 @@ export const PHASES: InternalPhase[] = [
   },
   {
     public: {
-      id: "maquinas-pecas",
+      id: "galo-telhado",
       kind: "choice",
-      eyebrow: "FÁBRICA",
-      prompt:
-        "5 MÁQUINAS FAZEM 5 PEÇAS EM 5 MINUTOS. QUANTO TEMPO 100 MÁQUINAS LEVAM PRA FAZER 100 PEÇAS?",
-      note: "Pensa em quanto tempo UMA máquina leva pra fazer UMA peça.",
+      eyebrow: "FAZENDINHA",
+      prompt: "UM GALO BOTA UM OVO EM CIMA DO TELHADO. PRA QUE LADO O OVO CAI?",
+      note: "Pensa no bicho, não no telhado.",
       columns: 2,
       choices: [
-        { id: "1", label: "1 MINUTO", size: "md" },
-        { id: "5", label: "5 MINUTOS", size: "md" },
-        { id: "20", label: "20 MINUTOS", size: "md" },
-        { id: "100", label: "100 MINUTOS", size: "md" },
+        { id: "esquerda", label: "PRA ESQUERDA", size: "md" },
+        { id: "direita", label: "PRA DIREITA", size: "md" },
+        { id: "vento", label: "PRO LADO DO VENTO", size: "md" },
+        { id: "nenhum", label: "GALO NÃO BOTA OVO", size: "md" },
       ],
     },
     explanation:
-      "Cada máquina faz 1 peça em 5 minutos. Com 100 máquinas juntas, saem 100 peças nos mesmos 5 minutos.",
-    validate: (answer) => choiceIs(answer, "5"),
+      "Galo não bota ovo, quem bota é a galinha. Quem pensou no formato do telhado caiu junto com o ovo.",
+    validate: (answer) => choiceIs(answer, "nenhum"),
   },
   {
     public: {
@@ -582,28 +565,6 @@ export const PHASES: InternalPhase[] = [
     explanation:
       "60 minutos: o primeiro agora, o segundo com 30 e o terceiro com 60. Quem respondeu 90 contou um intervalo a mais.",
     validate: (answer) => typedOneOf(answer, ["60", "sessenta"]),
-  },
-  {
-    public: {
-      id: "anos-bissextos",
-      kind: "multi",
-      eyebrow: "CALENDÁRIO",
-      prompt: "SELECIONA SÓ OS ANOS BISSEXTOS.",
-      note: "Ser divisível por 4 nem sempre basta.",
-      submitLabel: "CONFIRMAR",
-      selectedLabel: "MARCADOS",
-      items: [
-        { id: "1900", label: "1900", size: "md" },
-        { id: "2000", label: "2000", size: "md" },
-        { id: "2023", label: "2023", size: "md" },
-        { id: "2024", label: "2024", size: "md" },
-        { id: "2100", label: "2100", size: "md" },
-      ],
-    },
-    explanation:
-      "Só 2000 e 2024. Ano terminado em 00 só é bissexto se der pra dividir por 400, por isso 1900 e 2100 não são.",
-    validate: (answer) =>
-      answer.kind === "multi" && sameSet(answer.selected, ["2000", "2024"]),
   },
   {
     public: {
