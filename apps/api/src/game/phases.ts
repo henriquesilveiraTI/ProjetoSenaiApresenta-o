@@ -54,7 +54,7 @@ export const PHASES: InternalPhase[] = [
       kind: "choice",
       eyebrow: "AQUECIMENTO",
       prompt: "APERTA O BOTÃO VERMELHO.",
-      note: "Lê de novo, com calma. O óbvio aqui é cilada.",
+      note: "Não pensa demais. Ou pensa?",
       columns: 2,
       choices: [
         {
@@ -74,8 +74,8 @@ export const PHASES: InternalPhase[] = [
       ],
     },
     explanation:
-      "O botão \"vermelho\" era o que tinha VERMELHO escrito. Foi na cor do fundo, né? A gente sabia kkkk",
-    validate: (answer) => choiceIs(answer, "vermelho"),
+      "O botão vermelho era o de fundo vermelho. Quem foi na palavra VERMELHO pensou demais kkkk",
+    validate: (answer) => choiceIs(answer, "botao"),
   },
   {
     public: {
@@ -152,22 +152,6 @@ export const PHASES: InternalPhase[] = [
     validate: (answer) =>
       answer.kind === "sequence" &&
       sameOrder(answer.order, ["maio", "abril", "agosto", "outubro"]),
-  },
-  {
-    public: {
-      id: "noves-ate-cem",
-      kind: "type",
-      eyebrow: "CONTAGEM",
-      prompt: "QUANTAS VEZES O ALGARISMO 9 APARECE ESCRITO DE 1 ATÉ 100?",
-      note: "Conta com calma. Tem número que vale dobrado.",
-      placeholder: "manda o número",
-      submitLabel: "ENVIAR",
-      maxLength: 40,
-      helper: "Só o número.",
-    },
-    explanation:
-      "São 20: nove nas unidades (9, 19… 89), dez de 90 a 99, e o 99 tem dois. Quase todo mundo chuta 10 ou 11.",
-    validate: (answer) => typedOneOf(answer, ["20", "vinte"]),
   },
   {
     public: {
@@ -696,6 +680,321 @@ export const PHASES: InternalPhase[] = [
       answer.kind === "drag" &&
       answer.itemId === "aroma" &&
       answer.target === "trash",
+  },
+  {
+    public: {
+      id: "quilo-algodao",
+      kind: "choice",
+      eyebrow: "BALANÇA",
+      prompt: "O QUE PESA MAIS: 1 KG DE ALGODÃO OU 1 KG DE FERRO?",
+      note: "Lê os números, não os materiais.",
+      columns: 3,
+      choices: [
+        { id: "algodao", label: "ALGODÃO", size: "md" },
+        { id: "ferro", label: "FERRO", size: "md" },
+        { id: "iguais", label: "PESAM IGUAL", size: "md" },
+      ],
+    },
+    explanation:
+      "1 kg é 1 kg, seja de algodão ou de ferro. O ferro só parece mais pesado porque ocupa menos espaço.",
+    validate: (answer) => choiceIs(answer, "iguais"),
+  },
+  {
+    public: {
+      id: "fosforo-escuro",
+      kind: "choice",
+      eyebrow: "APAGÃO",
+      prompt:
+        "VOCÊ ENTRA NUM QUARTO ESCURO COM UM FÓSFORO. TEM UMA VELA, UM LAMPIÃO E UMA LAREIRA. O QUE VOCÊ ACENDE PRIMEIRO?",
+      note: "Primeiro mesmo.",
+      columns: 2,
+      choices: [
+        { id: "vela", label: "A VELA", size: "md" },
+        { id: "lampiao", label: "O LAMPIÃO", size: "md" },
+        { id: "lareira", label: "A LAREIRA", size: "md" },
+        { id: "fosforo", label: "O FÓSFORO", size: "md" },
+      ],
+    },
+    explanation:
+      "Sem acender o fósforo, nada mais acende. Ele vem antes de tudo.",
+    validate: (answer) => choiceIs(answer, "fosforo"),
+  },
+  {
+    public: {
+      id: "dividir-por-meio",
+      kind: "type",
+      eyebrow: "CONTINHA",
+      prompt: "QUANTO É 30 DIVIDIDO POR MEIO, MAIS 10?",
+      note: "Dividir por meio não é dividir ao meio.",
+      placeholder: "manda o número",
+      submitLabel: "ENVIAR",
+      maxLength: 40,
+      helper: "Só o número.",
+    },
+    explanation:
+      "Dividir por meio (0,5) é o mesmo que multiplicar por 2: 30 ÷ 0,5 = 60, mais 10 dá 70. Quem respondeu 25 dividiu ao meio.",
+    validate: (answer) => typedOneOf(answer, ["70", "setenta"]),
+  },
+  {
+    public: {
+      id: "trem-eletrico",
+      kind: "choice",
+      eyebrow: "FÍSICA",
+      prompt:
+        "UM TREM ELÉTRICO VAI PRO NORTE E O VENTO SOPRA PRO SUL. PRA QUE LADO VAI A FUMAÇA?",
+      note: "Repara no tipo de trem.",
+      columns: 2,
+      choices: [
+        { id: "norte", label: "PRO NORTE", size: "md" },
+        { id: "sul", label: "PRO SUL", size: "md" },
+        { id: "cima", label: "PRA CIMA", size: "md" },
+        { id: "nenhum", label: "NÃO TEM FUMAÇA", size: "md" },
+      ],
+    },
+    explanation:
+      "Trem elétrico não solta fumaça. Quem calculou o vento fez física à toa.",
+    validate: (answer) => choiceIs(answer, "nenhum"),
+  },
+  {
+    public: {
+      id: "irma-hospital",
+      kind: "choice",
+      eyebrow: "FAMÍLIA",
+      prompt:
+        "PEDRO É IRMÃO DA PESSOA QUE DIRIGE O HOSPITAL, MAS ESSA PESSOA NÃO É IRMÃO DO PEDRO. COMO PODE?",
+      note: "Ninguém tá mentindo.",
+      columns: 2,
+      choices: [
+        { id: "primos", label: "SÃO PRIMOS", size: "md" },
+        { id: "mentira", label: "É IMPOSSÍVEL", size: "md" },
+        { id: "irma", label: "É IRMÃ DELE", size: "md" },
+        { id: "adotado", label: "PEDRO É ADOTADO", size: "md" },
+      ],
+    },
+    explanation:
+      "Quem dirige o hospital é uma mulher: ela é IRMÃ do Pedro, não irmão. O cérebro imaginou um homem sozinho.",
+    validate: (answer) => choiceIs(answer, "irma"),
+  },
+  {
+    public: {
+      id: "depois-de-amanha",
+      kind: "choice",
+      eyebrow: "CALENDÁRIO",
+      prompt: "SE ONTEM FOI SEXTA-FEIRA, QUE DIA SERÁ DEPOIS DE AMANHÃ?",
+      note: "Primeiro descobre que dia é hoje.",
+      columns: 2,
+      choices: [
+        { id: "sabado", label: "SÁBADO", size: "md" },
+        { id: "domingo", label: "DOMINGO", size: "md" },
+        { id: "segunda", label: "SEGUNDA", size: "md" },
+        { id: "terca", label: "TERÇA", size: "md" },
+      ],
+    },
+    explanation:
+      "Ontem foi sexta, então hoje é sábado, amanhã é domingo e depois de amanhã é SEGUNDA.",
+    validate: (answer) => choiceIs(answer, "segunda"),
+  },
+  {
+    public: {
+      id: "numeros-primos",
+      kind: "multi",
+      eyebrow: "MATEMÁTICA",
+      prompt: "SELECIONA TODOS OS NÚMEROS PRIMOS.",
+      note: "Primo só é divisível por 1 e por ele mesmo. E o 1 não entra no clube.",
+      submitLabel: "CONFIRMAR",
+      selectedLabel: "MARCADOS",
+      items: [
+        { id: "1", label: "1", size: "lg" },
+        { id: "2", label: "2", size: "lg" },
+        { id: "9", label: "9", size: "lg" },
+        { id: "11", label: "11", size: "lg" },
+        { id: "15", label: "15", size: "lg" },
+        { id: "17", label: "17", size: "lg" },
+      ],
+    },
+    explanation:
+      "2, 11 e 17. O 1 não é primo, o 2 é o único primo par, e 9 e 15 são divisíveis por 3.",
+    validate: (answer) =>
+      answer.kind === "multi" && sameSet(answer.selected, ["2", "11", "17"]),
+  },
+  {
+    public: {
+      id: "pesos-ordem",
+      kind: "sequence",
+      eyebrow: "BALANÇA",
+      prompt: "ORDENA DO MAIS LEVE PRO MAIS PESADO.",
+      note: "Olha o número, não o material.",
+      submitLabel: "CONFIRMAR ORDEM",
+      selectedLabel: "SUA ORDEM",
+      items: [
+        { id: "pena", label: "1 KG DE PENA" },
+        { id: "chumbo", label: "500 G DE CHUMBO" },
+        { id: "algodao", label: "2 KG DE ALGODÃO" },
+        { id: "ferro", label: "0,8 KG DE FERRO" },
+      ],
+    },
+    explanation:
+      "500 g de chumbo (0,5 kg), 0,8 kg de ferro, 1 kg de pena e 2 kg de algodão. Material pesado não ganha de número maior.",
+    validate: (answer) =>
+      answer.kind === "sequence" &&
+      sameOrder(answer.order, ["chumbo", "ferro", "pena", "algodao"]),
+  },
+  {
+    public: {
+      id: "nao-e-planeta",
+      kind: "drag",
+      eyebrow: "ASTRONOMIA",
+      prompt: "ARRASTA PRA LIXEIRA O QUE NÃO É PLANETA.",
+      note: "Teve um que foi rebaixado.",
+      targetLabel: "LIXEIRA",
+      keepLabel: "DEIXAR",
+      selectHint: "Escolhe um astro e depois o destino.",
+      items: [
+        { id: "marte", label: "MARTE" },
+        { id: "plutao", label: "PLUTÃO" },
+        { id: "venus", label: "VÊNUS" },
+        { id: "netuno", label: "NETUNO" },
+      ],
+    },
+    explanation:
+      "Desde 2006, PLUTÃO é classificado como planeta anão. Marte, Vênus e Netuno continuam planetas.",
+    validate: (answer) =>
+      answer.kind === "drag" &&
+      answer.itemId === "plutao" &&
+      answer.target === "trash",
+  },
+  {
+    public: {
+      id: "nao-e-peixe",
+      kind: "drag",
+      eyebrow: "BIOLOGIA",
+      prompt: "ARRASTA PRA LIXEIRA O ÚNICO QUE NÃO É PEIXE.",
+      note: "Morar no mar não faz de ninguém um peixe.",
+      targetLabel: "LIXEIRA",
+      keepLabel: "DEIXAR",
+      selectHint: "Escolhe um bicho e depois o destino.",
+      items: [
+        { id: "tubarao", label: "TUBARÃO" },
+        { id: "cavalo-marinho", label: "CAVALO-MARINHO" },
+        { id: "golfinho", label: "GOLFINHO" },
+        { id: "salmao", label: "SALMÃO" },
+      ],
+    },
+    explanation:
+      "O GOLFINHO é mamífero. O cavalo-marinho, por mais estranho que pareça, é peixe sim.",
+    validate: (answer) =>
+      answer.kind === "drag" &&
+      answer.itemId === "golfinho" &&
+      answer.target === "trash",
+  },
+  {
+    public: {
+      id: "macas-cesta",
+      kind: "type",
+      eyebrow: "FEIRA",
+      prompt: "UMA CESTA TEM 3 MAÇÃS. VOCÊ TIRA 2. QUANTAS MAÇÃS VOCÊ TEM?",
+      note: "A pergunta é sobre você, não sobre a cesta.",
+      placeholder: "manda o número",
+      submitLabel: "ENVIAR",
+      maxLength: 40,
+      helper: "Só o número.",
+    },
+    explanation:
+      "Você tem as 2 que tirou. Quem respondeu 1 contou o que sobrou na cesta.",
+    validate: (answer) => typedOneOf(answer, ["2", "dois", "duas"]),
+  },
+  {
+    public: {
+      id: "cor-que-diz",
+      kind: "choice",
+      eyebrow: "COR OU PALAVRA?",
+      prompt: "CLICA NA PALAVRA ESCRITA NA MESMA COR QUE ELA DIZ.",
+      note: "Palavra e cor da letra precisam bater.",
+      columns: 3,
+      choices: [
+        {
+          id: "verde",
+          label: "VERDE",
+          surface: "panel",
+          labelTone: "danger",
+          size: "lg",
+        },
+        {
+          id: "azul",
+          label: "AZUL",
+          surface: "panel",
+          labelTone: "sky",
+          size: "lg",
+        },
+        {
+          id: "vermelho",
+          label: "VERMELHO",
+          surface: "panel",
+          labelTone: "neon",
+          size: "lg",
+        },
+      ],
+    },
+    explanation:
+      "Só AZUL estava escrito em azul. VERDE estava em vermelho e VERMELHO estava em verde.",
+    validate: (answer) => choiceIs(answer, "azul"),
+  },
+  {
+    public: {
+      id: "cavalo-napoleao",
+      kind: "type",
+      eyebrow: "HISTÓRIA",
+      prompt: "QUAL ERA A COR DO CAVALO BRANCO DE NAPOLEÃO?",
+      note: "Não precisa saber história.",
+      placeholder: "manda a cor",
+      submitLabel: "ENVIAR",
+      maxLength: 40,
+      helper: "Uma palavra resolve.",
+    },
+    explanation:
+      "BRANCO. A resposta tava na pergunta. Quem foi pesquisar Napoleão perdeu tempo.",
+    validate: (answer) => typedOneOf(answer, ["branco", "branca"]),
+  },
+  {
+    public: {
+      id: "meio-de-paris",
+      kind: "choice",
+      eyebrow: "GEOGRAFIA?",
+      prompt: "O QUE FICA BEM NO MEIO DE PARIS?",
+      note: "Olha pra palavra.",
+      columns: 2,
+      choices: [
+        { id: "torre", label: "A TORRE EIFFEL", size: "md" },
+        { id: "sena", label: "O RIO SENA", size: "md" },
+        { id: "letra-r", label: "A LETRA R", size: "md" },
+        { id: "louvre", label: "O LOUVRE", size: "md" },
+      ],
+    },
+    explanation:
+      "P-A-R-I-S: a letra do meio é o R. Era sobre a palavra, não sobre a cidade.",
+    validate: (answer) => choiceIs(answer, "letra-r"),
+  },
+  {
+    public: {
+      id: "duzias-ordem",
+      kind: "sequence",
+      eyebrow: "MENOR PRO MAIOR",
+      prompt: "ORDENA DO MENOR PRO MAIOR.",
+      note: "Traduz tudo pra número antes.",
+      submitLabel: "CONFIRMAR ORDEM",
+      selectedLabel: "SUA ORDEM",
+      items: [
+        { id: "duzia", label: "UMA DÚZIA" },
+        { id: "meia-duzia", label: "MEIA DÚZIA" },
+        { id: "dezena", label: "UMA DEZENA" },
+        { id: "oito", label: "OITO" },
+      ],
+    },
+    explanation:
+      "Meia dúzia (6), oito (8), uma dezena (10) e uma dúzia (12).",
+    validate: (answer) =>
+      answer.kind === "sequence" &&
+      sameOrder(answer.order, ["meia-duzia", "oito", "dezena", "duzia"]),
   },
 ];
 

@@ -10,14 +10,13 @@ import {
 } from "../src/game/phases.js";
 
 const correctAnswers: Record<string, PhaseAnswer> = {
-  "botao-da-cor": { kind: "choice", choiceId: "vermelho" },
+  "botao-da-cor": { kind: "choice", choiceId: "botao" },
   "nao-clique": { kind: "outside", target: "background" },
   "tinta-nao-significado": { kind: "choice", choiceId: "verde" },
   "meses-letras": {
     kind: "sequence",
     order: ["maio", "abril", "agosto", "outubro"],
   },
-  "noves-ate-cem": { kind: "type", value: "20" },
   "nao-e-mamifero": { kind: "drag", itemId: "pinguim", target: "trash" },
   "erro-na-frase": { kind: "choice", choiceId: "esta" },
   "segure-tres": { kind: "hold", heldMs: 3100 },
@@ -49,6 +48,27 @@ const correctAnswers: Record<string, PhaseAnswer> = {
   "nada-verde": { kind: "choice", choiceId: "amarelo" },
   "proximo-numero": { kind: "type", value: "Treze" },
   "anagrama-amor": { kind: "drag", itemId: "aroma", target: "trash" },
+  "quilo-algodao": { kind: "choice", choiceId: "iguais" },
+  "fosforo-escuro": { kind: "choice", choiceId: "fosforo" },
+  "dividir-por-meio": { kind: "type", value: "70" },
+  "trem-eletrico": { kind: "choice", choiceId: "nenhum" },
+  "irma-hospital": { kind: "choice", choiceId: "irma" },
+  "depois-de-amanha": { kind: "choice", choiceId: "segunda" },
+  "numeros-primos": { kind: "multi", selected: ["17", "2", "11"] },
+  "pesos-ordem": {
+    kind: "sequence",
+    order: ["chumbo", "ferro", "pena", "algodao"],
+  },
+  "nao-e-planeta": { kind: "drag", itemId: "plutao", target: "trash" },
+  "nao-e-peixe": { kind: "drag", itemId: "golfinho", target: "trash" },
+  "macas-cesta": { kind: "type", value: "Duas" },
+  "cor-que-diz": { kind: "choice", choiceId: "azul" },
+  "cavalo-napoleao": { kind: "type", value: "Branco!" },
+  "meio-de-paris": { kind: "choice", choiceId: "letra-r" },
+  "duzias-ordem": {
+    kind: "sequence",
+    order: ["meia-duzia", "oito", "dezena", "duzia"],
+  },
 };
 
 describe("fases", () => {
