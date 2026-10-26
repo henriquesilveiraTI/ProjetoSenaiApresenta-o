@@ -47,3 +47,6 @@ process.on("SIGTERM", () => void shutdown("SIGTERM"));
 process.on("unhandledRejection", (reason) => {
   logger.error({ err: reason }, "Promise rejeitada sem tratamento");
 });
+
+// A Vercel usa o app exportado como handler da função serverless.
+export default app;

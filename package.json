@@ -2,6 +2,7 @@
   "name": "error-game",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "ERROR — jogo de pegadinhas e raciocínio lateral com web app, PWA e API.",
   "license": "MIT",
   "workspaces": [
