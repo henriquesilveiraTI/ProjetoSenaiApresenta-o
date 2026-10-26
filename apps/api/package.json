@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch --clear-screen=false src/server.ts",
+    "prebuild": "npm run build -w @error/shared",
     "build": "tsup",
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
