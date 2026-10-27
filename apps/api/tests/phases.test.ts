@@ -66,7 +66,32 @@ const correctAnswers: Record<string, PhaseAnswer> = {
     kind: "sequence",
     order: ["meia-duzia", "oito", "dezena", "duzia"],
   },
+  "maior-numero": { kind: "choice", choiceId: "1000" },
+  "buracos-camiseta": { kind: "type", value: "4 buracos" },
+  "cai-em-pe": { kind: "choice", choiceId: "chuva" },
+  paciencia: { kind: "wait", waitedMs: 6100 },
+  "painel-quebrado": { kind: "outside", target: "background" },
+  "letras-o-alfabeto": { kind: "type", value: "Nove" },
+  "numeros-alfabetica": {
+    kind: "sequence",
+    order: ["dois", "quatro", "tres", "um"],
+  },
+  "sem-perna": { kind: "drag", itemId: "cobra", target: "trash" },
+  "dentes-nao-morde": {
+    kind: "multi",
+    selected: ["engrenagem", "pente", "serrote"],
+  },
+  "anda-com-as-patas": { kind: "choice", choiceId: "pato" },
+  "quanto-mais-tira": { kind: "type", value: "Um buraco!" },
+  "girafa-geladeira": { kind: "choice", choiceId: "abre-fecha" },
+  "lados-da-bola": { kind: "choice", choiceId: "2" },
 };
+
+describe("banco de perguntas", () => {
+  it("tem 54 fases", () => {
+    expect(PHASES).toHaveLength(54);
+  });
+});
 
 describe("fases", () => {
   it("tem fases suficientes para sortear uma partida", () => {

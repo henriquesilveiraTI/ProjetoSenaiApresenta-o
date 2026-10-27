@@ -937,6 +937,252 @@ export const PHASES: InternalPhase[] = [
       answer.kind === "sequence" &&
       sameOrder(answer.order, ["meia-duzia", "oito", "dezena", "duzia"]),
   },
+  {
+    public: {
+      id: "maior-numero",
+      kind: "choice",
+      eyebrow: "TAMANHO É DOCUMENTO?",
+      prompt: "CLICA NO MAIOR NÚMERO.",
+      note: "Não se deixa levar pelas aparências.",
+      columns: 2,
+      choices: [
+        { id: "9", label: "9", size: "lg" },
+        { id: "1000", label: "1.000", size: "sm" },
+        { id: "99", label: "99", size: "lg" },
+        { id: "100", label: "100", size: "md" },
+      ],
+    },
+    explanation:
+      "1.000 era o maior, mesmo escrito pequenininho. O tamanho da letra não muda o valor do número.",
+    validate: (answer) => choiceIs(answer, "1000"),
+  },
+  {
+    public: {
+      id: "buracos-camiseta",
+      kind: "type",
+      eyebrow: "GUARDA-ROUPA",
+      prompt: "QUANTOS BURACOS TEM UMA CAMISETA SEM ESTAMPA E SEM DEFEITO?",
+      note: "Imagina você vestindo ela.",
+      placeholder: "manda o número",
+      submitLabel: "ENVIAR",
+      maxLength: 40,
+      helper: "Só o número.",
+    },
+    explanation:
+      "São 4: a gola, as duas mangas e a parte de baixo. Quem respondeu zero pensou em furo, não em buraco.",
+    validate: (answer) => typedOneOf(answer, ["4", "quatro"]),
+  },
+  {
+    public: {
+      id: "cai-em-pe",
+      kind: "choice",
+      eyebrow: "O QUE É, O QUE É?",
+      prompt: "O QUE É, O QUE É: CAI EM PÉ E CORRE DEITADO?",
+      note: "Olha pro céu.",
+      columns: 2,
+      choices: [
+        { id: "gato", label: "GATO", size: "md" },
+        { id: "chuva", label: "CHUVA", size: "md" },
+        { id: "arvore", label: "ÁRVORE", size: "md" },
+        { id: "crianca", label: "CRIANÇA", size: "md" },
+      ],
+    },
+    explanation:
+      "A CHUVA cai em pé (de cima pra baixo) e corre deitada pelo chão. Clássico das adivinhas.",
+    validate: (answer) => choiceIs(answer, "chuva"),
+  },
+  {
+    public: {
+      id: "paciencia",
+      kind: "wait",
+      eyebrow: "PACIÊNCIA",
+      prompt: "CLICA NO BOTÃO O MAIS RÁPIDO QUE VOCÊ CONSEGUIR!",
+      note: "Rápido nem sempre é agora.",
+      buttonLabel: "CLICA",
+      waitingLabel: "CALMA...",
+      readyLabel: "AGORA SIM",
+      waitMs: 6000,
+    },
+    explanation:
+      "O botão só liberava depois de 6 segundos. Quem ficou clicando feito doido só gastou o dedo.",
+    validate: (answer) => answer.kind === "wait" && answer.waitedMs >= 5900,
+  },
+  {
+    public: {
+      id: "painel-quebrado",
+      kind: "outside",
+      eyebrow: "DEFEITO DE FÁBRICA",
+      prompt: "TODOS OS BOTÕES DESTE PAINEL ESTÃO QUEBRADOS. AVANÇA MESMO ASSIM.",
+      note: "Botão quebrado não funciona, né?",
+      panelTitle: "PAINEL COM DEFEITO",
+      decoys: [
+        { id: "avancar", label: "AVANÇAR", surface: "neon" },
+        { id: "consertar", label: "CONSERTAR", surface: "panel" },
+        { id: "reiniciar", label: "REINICIAR", surface: "danger" },
+      ],
+    },
+    explanation:
+      "Se os botões estão quebrados, nenhum deles funciona. Era só clicar fora do painel (ou apertar Esc).",
+    validate: (answer) => answer.kind === "outside" && answer.target === "background",
+  },
+  {
+    public: {
+      id: "letras-o-alfabeto",
+      kind: "type",
+      eyebrow: "CONTA DIREITO",
+      prompt: "QUANTAS LETRAS TEM \"O ALFABETO\"?",
+      note: "Conta só o que tá entre aspas.",
+      placeholder: "manda o número",
+      submitLabel: "ENVIAR",
+      maxLength: 40,
+      helper: "Só o número.",
+    },
+    explanation:
+      "\"O ALFABETO\" tem 9 letras: O (1) + ALFABETO (8). Quem respondeu 26 contou o alfabeto inteiro.",
+    validate: (answer) => typedOneOf(answer, ["9", "nove"]),
+  },
+  {
+    public: {
+      id: "numeros-alfabetica",
+      kind: "sequence",
+      eyebrow: "DICIONÁRIO",
+      prompt: "ORDENA EM ORDEM ALFABÉTICA.",
+      note: "Alfabética. Não numérica.",
+      submitLabel: "CONFIRMAR ORDEM",
+      selectedLabel: "SUA ORDEM",
+      items: [
+        { id: "um", label: "UM" },
+        { id: "dois", label: "DOIS" },
+        { id: "tres", label: "TRÊS" },
+        { id: "quatro", label: "QUATRO" },
+      ],
+    },
+    explanation:
+      "DOIS (D), QUATRO (Q), TRÊS (T), UM (U). Quem contou 1, 2, 3, 4 caiu no automático.",
+    validate: (answer) =>
+      answer.kind === "sequence" &&
+      sameOrder(answer.order, ["dois", "quatro", "tres", "um"]),
+  },
+  {
+    public: {
+      id: "sem-perna",
+      kind: "drag",
+      eyebrow: "CONTA AS PERNAS",
+      prompt: "ARRASTA PRA LIXEIRA O ÚNICO QUE NÃO TEM PERNA.",
+      note: "Móvel também tem perna.",
+      targetLabel: "LIXEIRA",
+      keepLabel: "DEIXAR",
+      selectHint: "Escolhe um item e depois o destino.",
+      items: [
+        { id: "mesa", label: "MESA" },
+        { id: "aranha", label: "ARANHA" },
+        { id: "cobra", label: "COBRA" },
+        { id: "cadeira", label: "CADEIRA" },
+      ],
+    },
+    explanation:
+      "A COBRA não tem perna nenhuma. Mesa e cadeira têm pernas (de madeira) e a aranha tem oito.",
+    validate: (answer) =>
+      answer.kind === "drag" &&
+      answer.itemId === "cobra" &&
+      answer.target === "trash",
+  },
+  {
+    public: {
+      id: "dentes-nao-morde",
+      kind: "multi",
+      eyebrow: "O QUE É, O QUE É?",
+      prompt: "SELECIONA TUDO QUE TEM DENTES MAS NÃO MORDE.",
+      note: "Dente não é só de bicho.",
+      submitLabel: "CONFIRMAR",
+      selectedLabel: "MARCADOS",
+      items: [
+        { id: "pente", label: "PENTE", size: "md" },
+        { id: "cachorro", label: "CACHORRO", size: "md" },
+        { id: "serrote", label: "SERROTE", size: "md" },
+        { id: "tubarao", label: "TUBARÃO", size: "md" },
+        { id: "engrenagem", label: "ENGRENAGEM", size: "md" },
+      ],
+    },
+    explanation:
+      "PENTE, SERROTE e ENGRENAGEM têm dentes e não mordem ninguém. Cachorro e tubarão mordem, e como mordem.",
+    validate: (answer) =>
+      answer.kind === "multi" &&
+      sameSet(answer.selected, ["pente", "serrote", "engrenagem"]),
+  },
+  {
+    public: {
+      id: "anda-com-as-patas",
+      kind: "choice",
+      eyebrow: "TROCADILHO",
+      prompt: "QUAL ANIMAL ANDA COM AS PATAS?",
+      note: "Lê de novo. Agora em voz alta.",
+      columns: 2,
+      choices: [
+        { id: "cachorro", label: "CACHORRO", size: "md" },
+        { id: "gato", label: "GATO", size: "md" },
+        { id: "pato", label: "O PATO", size: "md" },
+        { id: "cavalo", label: "CAVALO", size: "md" },
+      ],
+    },
+    explanation:
+      "O PATO anda com as patas: as fêmeas dele! Todo bicho tem pata, mas só o pato anda com AS PATAS.",
+    validate: (answer) => choiceIs(answer, "pato"),
+  },
+  {
+    public: {
+      id: "quanto-mais-tira",
+      kind: "type",
+      eyebrow: "O QUE É, O QUE É?",
+      prompt: "O QUE É, O QUE É: QUANTO MAIS SE TIRA, MAIOR FICA?",
+      note: "Tem a ver com uma pá.",
+      placeholder: "manda a palavra",
+      submitLabel: "ENVIAR",
+      maxLength: 40,
+      helper: "Uma palavra resolve.",
+    },
+    explanation:
+      "O BURACO. Quanto mais terra você tira, maior ele fica.",
+    validate: (answer) => typedOneOf(answer, ["buraco"]),
+  },
+  {
+    public: {
+      id: "girafa-geladeira",
+      kind: "choice",
+      eyebrow: "LÓGICA DE COZINHA",
+      prompt: "COMO VOCÊ COLOCA UMA GIRAFA DENTRO DA GELADEIRA?",
+      note: "Não complica.",
+      columns: 2,
+      choices: [
+        { id: "pedacos", label: "EM PEDAÇOS", size: "md" },
+        { id: "nao-cabe", label: "NÃO CABE", size: "md" },
+        { id: "abre-fecha", label: "ABRE, COLOCA E FECHA", size: "md" },
+        { id: "deitada", label: "DEITADA", size: "md" },
+      ],
+    },
+    explanation:
+      "Abre a geladeira, coloca a girafa e fecha. A pergunta era \"como\", não \"se cabe\".",
+    validate: (answer) => choiceIs(answer, "abre-fecha"),
+  },
+  {
+    public: {
+      id: "lados-da-bola",
+      kind: "choice",
+      eyebrow: "GEOMETRIA?",
+      prompt: "QUANTOS LADOS TEM UMA BOLA?",
+      note: "Não é aula de geometria.",
+      columns: 2,
+      choices: [
+        { id: "0", label: "NENHUM", size: "md" },
+        { id: "1", label: "1", size: "md" },
+        { id: "2", label: "2", size: "md" },
+        { id: "infinitos", label: "INFINITOS", size: "md" },
+      ],
+    },
+    explanation:
+      "Dois: o lado de dentro e o lado de fora. Quem foi pra geometria pensou demais.",
+    validate: (answer) => choiceIs(answer, "2"),
+  },
 ];
 
 export function findPhaseByPublicId(id: string): InternalPhase | null {
