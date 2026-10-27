@@ -32,5 +32,5 @@ export function calculatePoints(
 }
 
 export function feedbackFor(correct: boolean): string {
-  return correct ? "BRABO DEMAIS" : "SKILL ISSUE";
+  return correct ? "RESPOSTA CERTA" : "RESPOSTA ERRADA";
 }

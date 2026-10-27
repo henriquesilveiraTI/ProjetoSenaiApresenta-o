@@ -52,6 +52,29 @@ function Lives({ lives, maxLives }: { lives: number; maxLives: number }) {
   );
 }
 
+const CORRECT_TITLES = [
+  "MANDOU BEM!",
+  "NÃO CAIU NESSA!",
+  "CÉREBRO AFIADO!",
+  "ESSA FOI FÁCIL, NÉ?",
+  "ACERTOU EM CHEIO!",
+];
+
+const WRONG_TITLES = [
+  "CAIU NA PEGADINHA!",
+  "ESSA PEGOU VOCÊ!",
+  "QUASE, MAS NÃO.",
+  "NÃO FOI DESSA VEZ.",
+  "A PEGADINHA VENCEU.",
+];
+
+function pickTitle(result: AnswerResult): string {
+  if (result.run.status === "completed") return "PARTIDA CONCLUÍDA!";
+  if (result.run.status !== "active") return "SUAS VIDAS ACABARAM.";
+  const titles = result.correct ? CORRECT_TITLES : WRONG_TITLES;
+  return titles[Math.floor(Math.random() * titles.length)]!;
+}
+
 function FeedbackOverlay({
   result,
   onContinue,
@@ -61,6 +84,8 @@ function FeedbackOverlay({
 }) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const finished = result.run.status !== "active";
+  // Sorteado uma vez por resposta, para o título não trocar a cada render.
+  const [title] = useState(() => pickTitle(result));
 
   useEffect(() => {
     buttonRef.current?.focus();
@@ -106,13 +131,7 @@ function FeedbackOverlay({
           id="feedback-title"
           className={`mt-2 text-3xl ${result.correct ? "text-ink" : "text-alert"}`}
         >
-          {result.correct
-            ? finished
-              ? "ZEROU. RESPEITA."
-              : "NÃO CAIU, AMASSOU."
-            : finished
-              ? "DEU RUIM. FIM DE JOGO."
-              : "CAIU FEITO PATINHO."}
+          {title}
         </h2>
 
         <p className="mt-4 text-sm leading-relaxed text-muted">
