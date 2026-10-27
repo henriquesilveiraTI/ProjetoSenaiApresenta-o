@@ -69,7 +69,6 @@ const correctAnswers: Record<string, PhaseAnswer> = {
   "maior-numero": { kind: "choice", choiceId: "1000" },
   "buracos-camiseta": { kind: "type", value: "4 buracos" },
   "cai-em-pe": { kind: "choice", choiceId: "chuva" },
-  paciencia: { kind: "wait", waitedMs: 6100 },
   "painel-quebrado": { kind: "outside", target: "background" },
   "letras-o-alfabeto": { kind: "type", value: "Nove" },
   "numeros-alfabetica": {
@@ -88,8 +87,8 @@ const correctAnswers: Record<string, PhaseAnswer> = {
 };
 
 describe("banco de perguntas", () => {
-  it("tem 54 fases", () => {
-    expect(PHASES).toHaveLength(54);
+  it("tem 53 fases", () => {
+    expect(PHASES).toHaveLength(53);
   });
 });
 

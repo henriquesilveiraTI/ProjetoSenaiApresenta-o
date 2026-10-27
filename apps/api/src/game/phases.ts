@@ -993,22 +993,6 @@ export const PHASES: InternalPhase[] = [
   },
   {
     public: {
-      id: "paciencia",
-      kind: "wait",
-      eyebrow: "PACIÊNCIA",
-      prompt: "CLICA NO BOTÃO O MAIS RÁPIDO QUE VOCÊ CONSEGUIR!",
-      note: "Rápido nem sempre é agora.",
-      buttonLabel: "CLICA",
-      waitingLabel: "CALMA...",
-      readyLabel: "AGORA SIM",
-      waitMs: 6000,
-    },
-    explanation:
-      "O botão só liberava depois de 6 segundos. Quem ficou clicando feito doido só gastou o dedo.",
-    validate: (answer) => answer.kind === "wait" && answer.waitedMs >= 5900,
-  },
-  {
-    public: {
       id: "painel-quebrado",
       kind: "outside",
       eyebrow: "DEFEITO DE FÁBRICA",
