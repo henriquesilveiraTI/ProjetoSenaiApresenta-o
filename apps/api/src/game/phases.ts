@@ -4,7 +4,6 @@ type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
   ? Omit<T, K>
   : never;
 
-/** Fase sem posição: número e total dependem do sorteio de cada partida. */
 export type PhaseSpec = DistributiveOmit<PublicPhase, "number" | "total">;
 
 export interface InternalPhase {
@@ -13,7 +12,6 @@ export interface InternalPhase {
   validate: (answer: PhaseAnswer) => boolean;
 }
 
-/** Quantas fases cada partida sorteia do banco. */
 export const PHASES_PER_RUN = 12;
 
 const choiceIs = (answer: PhaseAnswer, choiceId: string): boolean =>
@@ -29,14 +27,12 @@ const sameSet = (left: string[], right: string[]): boolean => {
   return a.length === b.length && a.every((value, index) => value === b[index]);
 };
 
-/** Aceita a resposta digitada se alguma palavra dela estiver entre as esperadas. */
 const typedOneOf = (answer: PhaseAnswer, accepted: string[]): boolean =>
   answer.kind === "type" &&
   normalizeText(answer.value)
     .split(" ")
     .some((word) => accepted.includes(word));
 
-/** Normaliza texto para comparação tolerante a caixa, acentos e pontuação. */
 export function normalizeText(value: string): string {
   return value
     .normalize("NFD")
@@ -195,22 +191,6 @@ export const PHASES: InternalPhase[] = [
     explanation:
       "Faltou o acento: é ESTÁ. O erro tava na palavra, não no sentido da frase. Sua prof de português ficaria orgulhosa.",
     validate: (answer) => choiceIs(answer, "esta"),
-  },
-  {
-    public: {
-      id: "segure-tres",
-      kind: "hold",
-      eyebrow: "RESISTÊNCIA",
-      prompt: "SEGURA O BOTÃO POR 3 SEGUNDOS.",
-      note: "Soltou antes, zerou. Sem choro.",
-      holdMs: 3000,
-      buttonLabel: "SEGURA",
-      holdingLabel: "NÃO SOLTA",
-      doneLabel: "PROCESSANDO",
-    },
-    explanation:
-      "Era só segurar 3 segundinhos sem soltar. Soltou antes, o contador voltava pro zero.",
-    validate: (answer) => answer.kind === "hold" && answer.heldMs >= 2900,
   },
   {
     public: {
@@ -796,29 +776,6 @@ export const PHASES: InternalPhase[] = [
   },
   {
     public: {
-      id: "numeros-primos",
-      kind: "multi",
-      eyebrow: "MATEMÁTICA",
-      prompt: "SELECIONA TODOS OS NÚMEROS PRIMOS.",
-      note: "Primo só é divisível por 1 e por ele mesmo. E o 1 não entra no clube.",
-      submitLabel: "CONFIRMAR",
-      selectedLabel: "MARCADOS",
-      items: [
-        { id: "1", label: "1", size: "lg" },
-        { id: "2", label: "2", size: "lg" },
-        { id: "9", label: "9", size: "lg" },
-        { id: "11", label: "11", size: "lg" },
-        { id: "15", label: "15", size: "lg" },
-        { id: "17", label: "17", size: "lg" },
-      ],
-    },
-    explanation:
-      "2, 11 e 17. O 1 não é primo, o 2 é o único primo par, e 9 e 15 são divisíveis por 3.",
-    validate: (answer) =>
-      answer.kind === "multi" && sameSet(answer.selected, ["2", "11", "17"]),
-  },
-  {
-    public: {
       id: "pesos-ordem",
       kind: "sequence",
       eyebrow: "BALANÇA",
@@ -938,22 +895,6 @@ export const PHASES: InternalPhase[] = [
     explanation:
       "Só AZUL estava escrito em azul. VERDE estava em vermelho e VERMELHO estava em verde.",
     validate: (answer) => choiceIs(answer, "azul"),
-  },
-  {
-    public: {
-      id: "cavalo-napoleao",
-      kind: "type",
-      eyebrow: "HISTÓRIA",
-      prompt: "QUAL ERA A COR DO CAVALO BRANCO DE NAPOLEÃO?",
-      note: "Não precisa saber história.",
-      placeholder: "manda a cor",
-      submitLabel: "ENVIAR",
-      maxLength: 40,
-      helper: "Uma palavra resolve.",
-    },
-    explanation:
-      "BRANCO. A resposta tava na pergunta. Quem foi pesquisar Napoleão perdeu tempo.",
-    validate: (answer) => typedOneOf(answer, ["branco", "branca"]),
   },
   {
     public: {

@@ -19,7 +19,6 @@ const correctAnswers: Record<string, PhaseAnswer> = {
   },
   "nao-e-mamifero": { kind: "drag", itemId: "pinguim", target: "trash" },
   "erro-na-frase": { kind: "choice", choiceId: "esta" },
-  "segure-tres": { kind: "hold", heldMs: 3100 },
   "ovelhas-menos-nove": { kind: "choice", choiceId: "9" },
   palindromos: { kind: "multi", selected: ["radar", "ovo", "arara"] },
   "bola-e-taco": { kind: "choice", choiceId: "05" },
@@ -54,7 +53,6 @@ const correctAnswers: Record<string, PhaseAnswer> = {
   "trem-eletrico": { kind: "choice", choiceId: "nenhum" },
   "irma-hospital": { kind: "choice", choiceId: "irma" },
   "depois-de-amanha": { kind: "choice", choiceId: "segunda" },
-  "numeros-primos": { kind: "multi", selected: ["17", "2", "11"] },
   "pesos-ordem": {
     kind: "sequence",
     order: ["chumbo", "ferro", "pena", "algodao"],
@@ -63,7 +61,6 @@ const correctAnswers: Record<string, PhaseAnswer> = {
   "nao-e-peixe": { kind: "drag", itemId: "golfinho", target: "trash" },
   "macas-cesta": { kind: "type", value: "Duas" },
   "cor-que-diz": { kind: "choice", choiceId: "azul" },
-  "cavalo-napoleao": { kind: "type", value: "Branco!" },
   "meio-de-paris": { kind: "choice", choiceId: "letra-r" },
   "duzias-ordem": {
     kind: "sequence",
